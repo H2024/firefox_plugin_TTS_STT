@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Moonshine Voice — Settings</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <h1>Moonshine Voice</h1>
+      <p class="lede">
+        Push-to-talk dictation that runs entirely on your machine. The model is
+        downloaded once from Hugging Face and then cached; your audio is never
+        uploaded anywhere.
+      </p>
+
+      <section id="permission" class="card warn" hidden>
+        <h2>1. Allow Moonshine on web pages</h2>
+        <p>
+          Firefox asks for this separately. Without it, the hotkey can't reach the
+          page you're typing into.
+        </p>
+        <button id="grant" class="primary">Enable on all sites</button>
+      </section>
+
+      <section class="card">
+        <h2>Model</h2>
+        <label>
+          Speech model
+          <select id="model"></select>
+        </label>
+        <p class="help" id="modelHelp"></p>
+
+        <label>
+          Compute device
+          <select id="device">
+            <option value="auto">Automatic (GPU if available)</option>
+            <option value="webgpu">WebGPU only</option>
+            <option value="wasm">CPU only</option>
+          </select>
+        </label>
+        <p class="help">
+          WebGPU is much faster but is only available in recent Firefox builds on
+          supported hardware. Automatic falls back to the CPU on its own.
+        </p>
+
+        <label>
+          WebAssembly runtime
+          <select id="runtimeSource">
+            <option value="auto">Automatic — from the add-on, CDN only if that fails</option>
+            <option value="local">Only from the add-on</option>
+            <option value="cdn">Only from the CDN (jsDelivr)</option>
+          </select>
+        </label>
+        <p class="help">
+          The runtime ships inside the add-on. If Firefox refuses to read it —
+          some installations do — the identical build can be fetched from
+          jsDelivr instead. Those are bytes handed to the loader compiled into
+          the add-on, so no remote code is executed. Diagnostics say which route
+          was used.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Dictation</h2>
+        <label>
+          Trigger
+          <select id="mode">
+            <option value="ptt">Hold the hotkey while speaking</option>
+            <option value="toggle">Press once to start, once to stop</option>
+          </select>
+        </label>
+
+        <label>
+          Hotkey
+          <button id="hotkey" class="hotkey">Ctrl + Shift + Space</button>
+        </label>
+        <p class="help">
+          Click and press the combination you want. Escape cancels a recording in
+          progress. There is also a built-in toolbar shortcut (Ctrl+Shift+Y) that
+          works as a start/stop toggle and can be changed in
+          <em>Add-ons → gear icon → Manage Extension Shortcuts</em>.
+        </p>
+
+        <label>
+          Where the text goes
+          <select id="insertMode">
+            <option value="insert">Type it into the focused field</option>
+            <option value="clipboard">Copy it to the clipboard</option>
+          </select>
+        </label>
+
+        <label class="row"><input type="checkbox" id="trailingSpace" /> Add a space after each utterance</label>
+        <label class="row"><input type="checkbox" id="capitalize" /> Capitalise the first letter</label>
+        <label class="row"><input type="checkbox" id="showIndicator" /> Show the listening indicator on the page</label>
+        <label class="row"><input type="checkbox" id="sounds" /> Play a short start/stop tone</label>
+
+        <label>
+          Maximum utterance length
+          <select id="maxSeconds">
+            <option value="15">15 seconds</option>
+            <option value="30">30 seconds</option>
+            <option value="60">60 seconds</option>
+            <option value="120">2 minutes</option>
+          </select>
+        </label>
+        <p class="help">
+          Moonshine is a short-form model. Long recordings still work but accuracy
+          and latency are best under about 30 seconds per utterance.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Read aloud</h2>
+        <label>
+          Voice engine
+          <select id="ttsEngine"></select>
+        </label>
+        <p class="help" id="ttsEngineHelp"></p>
+
+        <label>
+          Voice
+          <select id="ttsVoice"></select>
+        </label>
+
+        <label>
+          Speed
+          <select id="ttsRate">
+            <option value="0.8">0.8× — slower</option>
+            <option value="0.9">0.9×</option>
+            <option value="1">1× — normal</option>
+            <option value="1.15">1.15×</option>
+            <option value="1.3">1.3× — faster</option>
+            <option value="1.5">1.5×</option>
+          </select>
+        </label>
+
+        <label>
+          Read-aloud hotkey
+          <button id="ttsHotkey" class="hotkey">Alt + Shift + R</button>
+        </label>
+        <p class="help">
+          Select text on a page and press it; press again (or Escape) to stop.
+          Right-clicking a selection offers <em>Read aloud with Moonshine Voice</em>
+          as well, and you can assign a browser-level shortcut to
+          <em>Read the selected text aloud</em> under
+          <em>Add-ons → gear icon → Manage Extension Shortcuts</em>.
+        </p>
+
+        <label class="row">
+          <input type="checkbox" id="ttsStopOnDictate" />
+          Stop reading as soon as I start dictating
+        </label>
+      </section>
+
+      <section class="card">
+        <h2>Microphone &amp; panel</h2>
+        <label class="row">
+          <input type="checkbox" id="keepMicOpen" />
+          Keep the microphone open between utterances (faster start, recording
+          indicator stays lit for a minute)
+        </label>
+        <label class="row">
+          <input type="checkbox" id="autoOpenWindow" />
+          If the panel is closed, open it automatically in a small window when I
+          press the hotkey
+        </label>
+        <p class="help">
+          The panel holds the microphone and the loaded model, so it needs to be
+          open while you dictate. Open it with the toolbar button or Ctrl+Shift+U.
+        </p>
+      </section>
+
+      <p class="saved" id="saved" hidden>Saved</p>
+    </main>
+
+    <script src="../common.js"></script>
+    <script src="options.js"></script>
+  </body>
+</html>

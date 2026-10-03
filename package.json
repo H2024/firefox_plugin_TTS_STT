@@ -1,0 +1,26 @@
+{
+  "name": "moonshine-voice",
+  "version": "1.6.0",
+  "private": true,
+  "description": "Firefox add-on: local push-to-talk dictation with the Moonshine ASR model",
+  "scripts": {
+    "build": "esbuild src/worker.js --bundle --format=esm --target=es2022 --platform=browser --outfile=ext/worker.js --alias:@huggingface/transformers=./node_modules/@huggingface/transformers/dist/transformers.web.js --alias:onnxruntime-web/webgpu=./node_modules/@huggingface/transformers/node_modules/onnxruntime-web/dist/ort.webgpu.bundle.min.mjs --alias:onnxruntime-web=./node_modules/@huggingface/transformers/node_modules/onnxruntime-web/dist/ort.webgpu.bundle.min.mjs && npm run build:tts && npm run copy:wasm",
+    "copy:wasm": "node scripts/copy-wasm.mjs",
+    "lint": "web-ext lint --source-dir=ext --self-hosted",
+    "start": "web-ext run --source-dir=ext",
+    "package": "web-ext build --source-dir=ext --artifacts-dir=dist --overwrite-dest",
+    "build:tts": "esbuild src/tts-worker.js --bundle --format=esm --target=es2022 --platform=browser --outfile=ext/tts-worker.js --alias:@huggingface/transformers=./node_modules/@huggingface/transformers/dist/transformers.web.js --alias:onnxruntime-web/webgpu=./node_modules/@huggingface/transformers/node_modules/onnxruntime-web/dist/ort.webgpu.bundle.min.mjs --alias:onnxruntime-web=./node_modules/@huggingface/transformers/node_modules/onnxruntime-web/dist/ort.webgpu.bundle.min.mjs --alias:kokoro-js=./node_modules/kokoro-js/dist/kokoro.js --alias:path=./src/stub-empty.js --alias:fs/promises=./src/stub-empty.js"
+  },
+  "devDependencies": {
+    "@huggingface/transformers": "^4.2.0",
+    "esbuild": "^0.25.0",
+    "onnxruntime-web": "^1.23.0",
+    "web-ext": "^8.0.0",
+    "kokoro-js": "^1.2.1"
+  },
+  "dependencies": {
+    "@moonshine-ai/moonshine-wasm": "^0.1.5",
+    "kokoro-js": "^1.2.1",
+    "playwright-core": "^1.63.0"
+  }
+}

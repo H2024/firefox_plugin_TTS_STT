@@ -1,0 +1,102 @@
+{
+  "manifest_version": 3,
+  "name": "Moonshine Voice",
+  "version": "1.6.0",
+  "description": "Push-to-talk dictation and read-aloud in Firefox. Speech recognition (Moonshine) and speech synthesis run 100% locally \u2014 no audio ever leaves your computer.",
+  "author": "hervanta",
+  "homepage_url": "https://github.com/usefulsensors/moonshine",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "moonshine-voice@hervanta",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  },
+  "icons": {
+    "48": "icons/mic-48.svg",
+    "96": "icons/mic-96.svg"
+  },
+  "permissions": [
+    "storage",
+    "notifications",
+    "scripting",
+    "menus"
+  ],
+  "optional_host_permissions": [
+    "<all_urls>"
+  ],
+  "host_permissions": [
+    "https://huggingface.co/*",
+    "https://*.hf.co/*",
+    "https://*.huggingface.co/*",
+    "https://download.moonshine.ai/*",
+    "https://cdn.jsdelivr.net/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self' 'wasm-unsafe-eval'; worker-src 'self' 'wasm-unsafe-eval';"
+  },
+  "background": {
+    "scripts": [
+      "common.js",
+      "background.js"
+    ]
+  },
+  "action": {
+    "default_title": "Moonshine Voice \u2014 open panel",
+    "default_icon": {
+      "48": "icons/mic-48.svg",
+      "96": "icons/mic-96.svg"
+    }
+  },
+  "sidebar_action": {
+    "default_title": "Moonshine Voice",
+    "default_panel": "sidebar/panel.html",
+    "default_icon": {
+      "48": "icons/mic-48.svg",
+      "96": "icons/mic-96.svg"
+    },
+    "open_at_install": false
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "common.js",
+        "content.js"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "run_at": "document_idle",
+      "all_frames": true,
+      "match_about_blank": false
+    }
+  ],
+  "commands": {
+    "toggle-recording": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+Y"
+      },
+      "description": "Start / stop Moonshine dictation"
+    },
+    "_execute_sidebar_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+U"
+      },
+      "description": "Open the Moonshine panel"
+    },
+    "read-selection": {
+      "description": "Read the selected text aloud"
+    }
+  }
+}

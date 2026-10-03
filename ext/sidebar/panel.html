@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Moonshine Voice</title>
+    <link rel="stylesheet" href="panel.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Moonshine Voice</h1>
+      <button id="settings" class="ghost" title="Settings">Settings</button>
+    </header>
+
+    <section id="status" class="status">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Starting…</span>
+    </section>
+
+    <div id="progressWrap" class="progress" hidden>
+      <div id="progressBar"></div>
+      <span id="progressText"></span>
+    </div>
+
+    <section class="record">
+      <button id="record" class="record-btn" disabled>
+        <span class="mic" aria-hidden="true"></span>
+        <span id="recordLabel">Loading model…</span>
+      </button>
+      <div class="meter" aria-hidden="true"><div id="meterBar"></div></div>
+      <p class="hint">
+        Hold <kbd id="hotkeyHint">Ctrl + Shift + Space</kbd> on any web page to dictate
+        into the field you're typing in.
+      </p>
+    </section>
+
+    <section class="speak">
+      <div class="log-head">
+        <h2>Read aloud</h2>
+        <span class="meta" id="ttsEngineInfo"></span>
+      </div>
+      <div class="speak-row">
+        <select id="ttsVoice" title="Voice"></select>
+        <button id="speak">Speak selection</button>
+        <button id="stopSpeak" class="ghost" hidden>Stop</button>
+      </div>
+      <div id="ttsProgressWrap" class="progress" hidden>
+        <div id="ttsProgressBar"></div>
+        <span id="ttsProgressText"></span>
+      </div>
+      <p class="hint">
+        Select text on a page and press <kbd id="ttsHotkeyHint">Alt + Shift + R</kbd>,
+        or right-click it and choose <em>Read aloud with Moonshine Voice</em>.
+      </p>
+    </section>
+
+    <section id="permissionBox" class="notice" hidden>
+      <p>Moonshine needs permission to run on the pages you dictate into.</p>
+      <button id="grant">Enable on all sites</button>
+    </section>
+
+    <section class="log">
+      <div class="log-head">
+        <h2>Transcripts</h2>
+        <span>
+          <button id="diag" class="ghost">Diagnostics</button>
+          <button id="clear" class="ghost">Clear</button>
+        </span>
+      </div>
+      <ul id="transcripts"></ul>
+    </section>
+
+    <footer>
+      <span id="engineInfo"></span>
+    </footer>
+
+    <script src="../common.js"></script>
+    <script src="../moonshine-tts.js"></script>
+    <script src="panel.js"></script>
+  </body>
+</html>
