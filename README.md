@@ -267,4 +267,3 @@ whether Firefox exposes WebGPU at all.
 Extension code: MIT. Moonshine model weights: see the model card on Hugging Face
 (`onnx-community/moonshine-base-ONNX`). transformers.js and onnxruntime-web are
 Apache-2.0.
-
